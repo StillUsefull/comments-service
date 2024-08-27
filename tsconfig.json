@@ -23,6 +23,12 @@
       ],
       "@lib/typeorm/*": [
         "libs/typeorm/src/*"
+      ],
+      "@lib/entities": [
+        "libs/entities/src"
+      ],
+      "@lib/entities/*": [
+        "libs/entities/src/*"
       ]
     }
   }

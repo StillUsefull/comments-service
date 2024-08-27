@@ -12,6 +12,8 @@
   },
   "moduleNameMapper": {
     "@lib/typeorm/(.*)": "<rootDir>/../libs/typeorm/src/$1",
-    "@lib/typeorm": "<rootDir>/../libs/typeorm/src"
+    "@lib/typeorm": "<rootDir>/../libs/typeorm/src",
+    "@lib/entities/(.*)": "<rootDir>/../libs/entities/src/$1",
+    "@lib/entities": "<rootDir>/../libs/entities/src"
   }
 }

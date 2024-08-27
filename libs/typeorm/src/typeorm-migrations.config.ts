@@ -20,7 +20,7 @@ const options = (): DataSourceOptions => {
         url,
         type: 'postgres',
         schema: 'public',
-        logging: !!configService.get('IS_PROD'),
+        logging: configService.get('IS_PROD') === false,
         entities: [],
         migrations: [],
         migrationsRun: true,
