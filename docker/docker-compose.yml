@@ -21,7 +21,7 @@ services:
     container_name: comments_service_container
     build: ..
     environment:
-      DB_HOST: postgres_post
+      DB_HOST: postgres_comments
       DB_PORT: 5432
       DB_USER: ${POSTGRES_USER:-postgres}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-123456}
