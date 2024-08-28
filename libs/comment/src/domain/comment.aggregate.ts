@@ -42,6 +42,8 @@ export class CommentAggregate implements IComment {
     @IsString()
     updatedAt = new Date().toISOString();
 
+    children: CommentAggregate[] = [];
+
     private constructor() {
 
     }
