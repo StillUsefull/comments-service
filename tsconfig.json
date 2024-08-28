@@ -16,6 +16,26 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@lib/typeorm": [
+        "libs/typeorm/src"
+      ],
+      "@lib/typeorm/*": [
+        "libs/typeorm/src/*"
+      ],
+      "@lib/entities": [
+        "libs/entities/src"
+      ],
+      "@lib/entities/*": [
+        "libs/entities/src/*"
+      ],
+      "@lib/comment": [
+        "libs/comment/src"
+      ],
+      "@lib/comment/*": [
+        "libs/comment/src/*"
+      ]
+    }
   }
 }
