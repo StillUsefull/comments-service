@@ -29,6 +29,12 @@
       ],
       "@lib/entities/*": [
         "libs/entities/src/*"
+      ],
+      "@lib/comment": [
+        "libs/comment/src"
+      ],
+      "@lib/comment/*": [
+        "libs/comment/src/*"
       ]
     }
   }
