@@ -16,6 +16,8 @@
     "@lib/entities/(.*)": "<rootDir>/../libs/entities/src/$1",
     "@lib/entities": "<rootDir>/../libs/entities/src",
     "@lib/comment/(.*)": "<rootDir>/../libs/comment/src/$1",
-    "@lib/comment": "<rootDir>/../libs/comment/src"
+    "@lib/comment": "<rootDir>/../libs/comment/src",
+    "@lib/providers/(.*)": "<rootDir>/../libs/providers/src/$1",
+    "@lib/providers": "<rootDir>/../libs/providers/src"
   }
 }
