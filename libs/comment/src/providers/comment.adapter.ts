@@ -11,56 +11,56 @@ export class CommentAdapter implements CommentRepository {
 
     constructor(@InjectRepository(CommentEntity) private readonly repository: Repository<CommentEntity>) {}
 
-    async save(comment: IComment): Promise<CommentAggregate>{
+    async save(comment: IComment): Promise<CommentAggregate> {
+        const { id, postId, parentComment, ...updateObject } = comment;
 
-        // update option
-        const existComment = await this.findOne(comment.id);
-        if (existComment) {
-            const {id, postId, ...updateObject} = comment;
-            await this.repository.update({id}, updateObject);
-            return this.findOne(id);
+        // updateOption
+        if (id) {
+            const existComment = await this.findOne(id);
+            if (existComment) {
+                await this.repository.update({ id }, updateObject);
+                return this.findOne(id);
+            }
+        }
+
+        if (parentComment) {
+            const parentCommentEntity = await this.repository.findOne({ where: { id: parentComment } });
+            if (!parentCommentEntity) {
+                throw new BadRequestException('Parent comment not found');
+            }
         }
 
         const savedComment = await this.repository.save(comment);
         return CommentAggregate.create(savedComment);
     }
 
-    // never used
+    // never used (cascade)
     async delete(id: string): Promise<boolean>{
-        const result = await this.repository.delete({id}).catch(err => {
-            return false;
-        })
-        return !!result;
+        const result = await this.repository.delete({id});
+        return result.affected > 0;
     }
 
 
-    async findAll(postId: string): Promise<CommentAggregate[]>{
-        const comments = await this.repository.find({
-            where: {postId},
-            relations: ['children']
-        });
-        return comments.map(comment => CommentAggregate.create(comment));
-    }
-
-
-    async findOne(id: string): Promise<CommentAggregate>{
-        const existComment = await this.repository.findOne({where: {id}})
-            .catch(err => {
-                return null;
-            });
-        if (!existComment){
-            return null;
-        }
-        return CommentAggregate.create(existComment);
-    }
-
-    async findTree(postId: string): Promise<CommentAggregate[]> {
+    async findAll(postId: string): Promise<CommentAggregate[]> {
         const comments = await this.repository.find({
             where: {postId, parentComment: null},
             relations: ['children']
         });
         return this.buildTree(comments);
     }
+
+
+    async findOne(id: string): Promise<CommentAggregate> {
+        const comment = await this.repository.findOne({
+            where: {id},
+            relations: ['children']
+        });
+        if (!comment) {
+            return null;
+        }
+        return CommentAggregate.create(comment);
+    }
+
 
     private buildTree(comments: CommentEntity[]): CommentAggregate[] {
         return comments.map(comment => {
@@ -70,15 +70,5 @@ export class CommentAdapter implements CommentRepository {
             }
             return aggregate
         })
-    }
-
-    async addReply(parentId: string, comment: IComment): Promise<CommentAggregate>{
-        const parentComment = await this.findOne(parentId);
-        if (!parentComment){
-            throw new BadRequestException(`Can not reply on this comment`);
-        }
-        const newComment = CommentAggregate.create({...comment, parentComment: parentId})
-        const savedComment = await this.repository.save(newComment);
-        return CommentAggregate.create(savedComment)
     }
 }
