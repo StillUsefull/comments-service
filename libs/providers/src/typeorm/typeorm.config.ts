@@ -9,7 +9,7 @@ config({ path: join(process.cwd(), '.env') });
 const configService = new ConfigService();
 
 const options = (): DataSourceOptions => {
-    const url = configService.get<string>('DB_URL')
+    const url = configService.get<string>('POSTGRES_URL')
     if (!url){
         throw new Error('Database URL is empty');
     }
