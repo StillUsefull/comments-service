@@ -5,7 +5,7 @@ import {GetCommentsQuery} from "@lib/comment/application/queries/get-comments/qu
 import {NotFoundException} from "@nestjs/common";
 
 @QueryHandler(GetCommentsQuery)
-export class GetCommentsHandler implements IQueryHandler<GetCommentsQuery, CommentAggregate>{
+export class GetCommentsHandler implements IQueryHandler<GetCommentsQuery, CommentAggregate[]>{
     constructor(private readonly repository: CommentRepository) {
     }
     async execute({postId}: GetCommentsQuery): Promise<CommentAggregate[]> {

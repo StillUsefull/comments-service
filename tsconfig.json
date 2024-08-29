@@ -35,6 +35,12 @@
       ],
       "@lib/comment/*": [
         "libs/comment/src/*"
+      ],
+      "@lib/providers": [
+        "libs/providers/src"
+      ],
+      "@lib/providers/*": [
+        "libs/providers/src/*"
       ]
     }
   }

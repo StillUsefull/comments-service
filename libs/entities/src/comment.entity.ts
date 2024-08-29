@@ -25,9 +25,6 @@ export class CommentEntity {
     @Column({name: 'post_id'})
     postId: string;
 
-    @Column({name: 'parent_comment', type: 'uuid', nullable: true})
-    parentComment?: string;
-
     @Column({ name: 'created_at' })
     createdAt: string;
 

@@ -1,12 +1,11 @@
 import {IComment} from "./comment.interface";
-import {randomStringGenerator} from "@nestjs/common/utils/random-string-generator.util";
-import {IsUUID, IsString, IsNotEmpty, IsEmail, IsUrl, validateSync} from 'class-validator'
+import {IsUUID, IsString, IsNotEmpty, IsEmail, IsUrl, validateSync, IsOptional} from 'class-validator'
 import {BadRequestException} from "@nestjs/common";
 import {validateTagsAndAttributes} from "@lib/comment/domain/markdown.rules";
-
+import { v4 as uuidv4 } from 'uuid';
 export class CommentAggregate implements IComment {
     @IsUUID()
-    id: string = randomStringGenerator();
+    id: string = uuidv4();
 
     @IsString()
     @IsNotEmpty()
@@ -18,6 +17,7 @@ export class CommentAggregate implements IComment {
     email: string;
 
     @IsString()
+    @IsOptional()
     @IsUrl()
     homepage?: string;
 
@@ -26,21 +26,22 @@ export class CommentAggregate implements IComment {
     text: string;
 
     @IsString()
+    @IsOptional()
     photo?: string;
 
     @IsUUID()
     @IsNotEmpty()
     postId: string;
 
-    @IsUUID()
-    @IsNotEmpty()
-    parentComment?: string;
+
 
     @IsString()
     createdAt = new Date().toISOString();
 
     @IsString()
     updatedAt = new Date().toISOString();
+
+    parent?: CommentAggregate;
 
     children: CommentAggregate[] = [];
 

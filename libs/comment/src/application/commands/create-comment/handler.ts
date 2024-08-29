@@ -11,7 +11,7 @@ export class CreateCommentHandler implements ICommandHandler<CreateCommentComman
     async execute({comment}: CreateCommentCommand): Promise<CommentAggregate>{
         const aggregate = CommentAggregate.create(comment);
         try {
-            return this.repository.save(aggregate);
+            return this.repository.create(aggregate);
         } catch (err) {
             throw new BadRequestException(err);
         }
