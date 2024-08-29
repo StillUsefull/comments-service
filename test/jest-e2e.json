@@ -18,6 +18,8 @@
     "@lib/comment/(.*)": "<rootDir>/../libs/comment/src/$1",
     "@lib/comment": "<rootDir>/../libs/comment/src",
     "@lib/providers/(.*)": "<rootDir>/../libs/providers/src/$1",
-    "@lib/providers": "<rootDir>/../libs/providers/src"
+    "@lib/providers": "<rootDir>/../libs/providers/src",
+    "@lib/user/(.*)": "<rootDir>/../libs/user/src/$1",
+    "@lib/user": "<rootDir>/../libs/user/src"
   }
 }

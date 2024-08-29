@@ -33,8 +33,6 @@ export class CommentAggregate implements IComment {
     @IsNotEmpty()
     postId: string;
 
-
-
     @IsString()
     createdAt = new Date().toISOString();
 
@@ -45,9 +43,7 @@ export class CommentAggregate implements IComment {
 
     children: CommentAggregate[] = [];
 
-    private constructor() {
-
-    }
+    private constructor() {}
 
     static create(comment: Partial<IComment>){
         const _comment = new CommentAggregate();
