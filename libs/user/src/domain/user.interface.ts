@@ -1,6 +1,7 @@
+import {ObjectId} from "typeorm";
 
 export interface IUser {
-    _id: string;
+    _id: ObjectId;
     username: string;
     email: string;
     createdAt: string;
