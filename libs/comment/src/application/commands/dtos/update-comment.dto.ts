@@ -1,18 +1,10 @@
 import {IsString, IsEmail, IsOptional, IsUUID, IsUrl, IsNotEmpty} from 'class-validator';
+import {IComment} from "@lib/comment/domain";
 
-export class UpdateCommentDto {
+export class UpdateCommentDto implements Partial<IComment>{
     @IsUUID()
     @IsNotEmpty()
     id: string;
-
-    @IsString()
-    @IsOptional()
-    username?: string;
-
-    @IsString()
-    @IsOptional()
-    @IsEmail()
-    email?: string;
 
     @IsString()
     @IsOptional()
