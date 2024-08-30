@@ -59,6 +59,12 @@
       ],
       "@lib/shared/*": [
         "libs/shared/src/*"
+      ],
+      "@lib/files": [
+        "libs/files/src"
+      ],
+      "@lib/files/*": [
+        "libs/files/src/*"
       ]
     }
   }

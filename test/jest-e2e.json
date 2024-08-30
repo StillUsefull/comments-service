@@ -24,6 +24,8 @@
     "@lib/auth/(.*)": "<rootDir>/../libs/auth/src/$1",
     "@lib/auth": "<rootDir>/../libs/auth/src",
     "@lib/shared/(.*)": "<rootDir>/../libs/shared/src/$1",
-    "@lib/shared": "<rootDir>/../libs/shared/src"
+    "@lib/shared": "<rootDir>/../libs/shared/src",
+    "@lib/files/(.*)": "<rootDir>/../libs/files/src/$1",
+    "@lib/files": "<rootDir>/../libs/files/src"
   }
 }

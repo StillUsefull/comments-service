@@ -6,6 +6,7 @@ import {LoginUserDto, RegisterUserDto} from "@lib/auth/dtos";
 import { v4 as uuidv4 } from 'uuid';
 import {ICachePayload, ICurrentUser} from "@lib/auth/interfaces";
 import {ConfigService} from "@nestjs/config";
+import {convertTimeToMilliseconds} from "@lib/shared/utils";
 @Injectable()
 export class AuthService {
     constructor(
@@ -25,6 +26,7 @@ export class AuthService {
             throw new UnauthorizedException('Invalid credentials');
         }
         const id = uuidv4();
+        const ttl = this.configService.get<string>('JWT_TTL');
         const payload = {sub: id, userAgent};
         const token = this.jwtService.sign(payload);
         await this.cacheManager.set(id, {
@@ -32,7 +34,7 @@ export class AuthService {
             email: _user.email,
             userId: _user._id,
             userAgent
-        }, 3600)
+        }, convertTimeToMilliseconds(ttl))
         return token;
     }
 
