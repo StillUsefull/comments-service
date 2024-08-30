@@ -1,10 +1,10 @@
 import {Global, Module} from '@nestjs/common';
 import {CommentModule} from "@lib/comment";
-import {UserModule} from "@lib/user";
+import {AuthModule} from "@lib/auth";
 
 @Global()
 @Module({
-    imports: [CommentModule, UserModule],
-    exports: [CommentModule, UserModule]
+    imports: [CommentModule, AuthModule],
+    exports: [CommentModule, AuthModule]
 })
 export class DomainsModule {}

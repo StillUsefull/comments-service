@@ -8,9 +8,9 @@ import {BadRequestException} from "@nestjs/common";
 export class GetUserHandler implements IQueryHandler<GetUserQuery, UserAggregate> {
     constructor(private readonly repository: UserRepository) {
     }
-    async execute({id}: GetUserQuery): Promise<UserAggregate>{
+    async execute({user}: GetUserQuery): Promise<UserAggregate>{
         try {
-            return this.repository.findOne(id)
+            return this.repository.findOne(user)
         } catch (err){
             throw new BadRequestException(err);
         }

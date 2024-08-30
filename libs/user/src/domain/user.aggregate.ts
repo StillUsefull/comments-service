@@ -6,7 +6,7 @@ import {ObjectId} from "typeorm";
 
 export class UserAggregate implements IUser{
 
-    @IsUUID()
+    @IsOptional()
     _id: ObjectId;
 
     @IsString()
@@ -25,14 +25,18 @@ export class UserAggregate implements IUser{
     updatedAt = new Date().toISOString();
 
     private constructor() {}
-    static create(user: Partial<IUser>){
-        const _user = new UserAggregate()
-        Object.assign(_user, user);
+    static create(user: Partial<IUser>) {
+        const plainUser = (user as any).toObject ? (user as any).toObject() : user;
+        const _user = new UserAggregate();
+        Object.assign(_user, plainUser);
+
         _user.updatedAt = _user?._id ? new Date().toISOString() : _user.updatedAt;
+
         const errors = validateSync(_user);
-        if (!!errors.length){
+        if (!!errors.length) {
             throw new BadRequestException('User data not valid');
         }
+
         return _user;
     }
 }

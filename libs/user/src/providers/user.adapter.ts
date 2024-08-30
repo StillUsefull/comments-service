@@ -39,11 +39,11 @@ export class UserAdapter implements UserRepository {
         return result.deletedCount > 0;
     };
 
-    async findOne(id: string): Promise<UserAggregate>{
-        const user = await this.userModel.findById(id).exec();
+    async findOne(query: Partial<IUser>): Promise<UserAggregate> {
+        const user = await this.userModel.findOne({...query}).exec();
         if (!user) {
-            throw new NotFoundException(`User with ID ${id} not found`);
+            throw new NotFoundException(`User not found with criteria: ${JSON.stringify(query)}`);
         }
         return UserAggregate.create(user as IUser);
-    };
+    }
 }

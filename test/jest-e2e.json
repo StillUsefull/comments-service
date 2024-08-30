@@ -20,6 +20,10 @@
     "@lib/providers/(.*)": "<rootDir>/../libs/providers/src/$1",
     "@lib/providers": "<rootDir>/../libs/providers/src",
     "@lib/user/(.*)": "<rootDir>/../libs/user/src/$1",
-    "@lib/user": "<rootDir>/../libs/user/src"
+    "@lib/user": "<rootDir>/../libs/user/src",
+    "@lib/auth/(.*)": "<rootDir>/../libs/auth/src/$1",
+    "@lib/auth": "<rootDir>/../libs/auth/src",
+    "@lib/shared/(.*)": "<rootDir>/../libs/shared/src/$1",
+    "@lib/shared": "<rootDir>/../libs/shared/src"
   }
 }

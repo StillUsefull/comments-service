@@ -21,22 +21,34 @@ services:
     container_name: comments_service_container
     build: ..
     environment:
-      DB_HOST: postgres_comments
-      DB_PORT: 5432
-      DB_USER: ${POSTGRES_USER:-postgres}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-123456}
-      DB_NAME: ${POSTGRES_DB:-postgres_db}
+      POSTGRES_URL: postgres://postgres:123456@localhost:5432/postgres_db
+      MONGODB_URL: mongodb+srv://dddmack6:B1FYpyH0qUCfXlJN@cluster0.o6fiz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      IS_PROD: false
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
       - postgres_comments
+      - redis
     ports:
       - "3000:3000"
     networks:
       - postgres_comments
+      - redis
+    restart: unless-stopped
+
+  redis:
+    container_name: redis_container
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - redis
     restart: unless-stopped
 
 networks:
     postgres_comments:
       driver: bridge
+    redis:
 
 volumes:
     postgres_comments:
