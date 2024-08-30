@@ -27,10 +27,13 @@ export class UserFacade {
     }
 
     deleteUser(id: string){
-        return this.commandBus.execute<DeleteUserCommand, DeleteUserHandler>(new DeleteUserCommand(id))
+        return this.commandBus.execute<DeleteUserCommand, DeleteUserHandler['execute']>(new DeleteUserCommand(id))
     }
 
-    getUser(id: string) {
-        return this.queryBus.execute<GetUserQuery, GetUserHandler>(new GetUserQuery(id))
+    getUser(user) {
+        return this.queryBus.execute<
+            GetUserQuery,
+            Awaited<ReturnType<GetUserHandler['execute']>>
+            >(new GetUserQuery(user))
     }
 }

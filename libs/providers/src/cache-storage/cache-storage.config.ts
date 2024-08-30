@@ -1,12 +1,8 @@
 import * as redisStore from "cache-manager-redis-store";
-import {join} from "path";
 import {ConfigService} from "@nestjs/config";
-import {config} from 'dotenv'
 
-config({ path: join(process.cwd(), '.env') });
 const configService = new ConfigService();
 
-console.log()
 export const RedisConfig = {
     isGlobal: true,
     store: redisStore,
