@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { HttpController } from './http.controller';
+import {CONTROLLERS} from "./controllers";
 
 @Module({
-  controllers: [HttpController]
+  controllers: [...CONTROLLERS]
 })
 export class HttpModule {}
