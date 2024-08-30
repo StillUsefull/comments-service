@@ -17,6 +17,11 @@ export class CreateCommentDto {
     homepage?: string;
 
     @IsString()
+    @IsOptional()
+    @IsUrl()
+    photo?: string;
+
+    @IsString()
     @IsNotEmpty()
     text: string;
 
