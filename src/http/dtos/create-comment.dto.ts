@@ -12,6 +12,10 @@ export class CreateCommentDto {
     @IsNotEmpty()
     text: string;
 
+    @IsUrl()
+    @IsOptional()
+    photo?: string;
+
     @IsUUID()
     @IsOptional()
     parentComment?: string;

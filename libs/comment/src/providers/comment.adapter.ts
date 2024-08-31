@@ -47,7 +47,7 @@ export class CommentAdapter implements CommentRepository {
         return this.findOne(id);
     }
 
-    async delete(id: string): Promise<CommentAggregate[]> {
+    async delete(id: string): Promise<string[]> {
         const comment = await this.repository.findOne({ where: { id } });
 
         if (!comment) {
@@ -56,9 +56,13 @@ export class CommentAdapter implements CommentRepository {
 
         const commentsToDelete = await this.repository.findDescendants(comment);
 
+        const photos = commentsToDelete
+            .map(comment => comment.photo)
+            .filter(photo => !!photo);
+
         await this.repository.remove(commentsToDelete);
 
-        return commentsToDelete.map(comment => CommentAggregate.create(comment));
+        return photos;
     }
 
     async findAll(postId: string, page: number = 1, pageSize: number = 10): Promise<CommentAggregate[]> {

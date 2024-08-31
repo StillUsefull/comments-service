@@ -1,6 +1,5 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
-import * as sharp from 'sharp';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -18,42 +17,35 @@ export class FilesService {
         });
     }
 
-    async processImage(file: Express.Multer.File): Promise<Buffer> {
-        const buffer = await sharp(file.buffer)
-            .resize({ width: 320, height: 240 })
-            .toBuffer();
-        return buffer;
-    }
 
-    async uploadFileToS3(file: Express.Multer.File, key: string): Promise<string> {
+    async generatePresignedUrl(): Promise<{ url: string, key: string }> {
+        const fileName = `${uuidv4()}`;
+
+        const key = `${fileName}`;
+
         const params = {
             Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
             Key: key,
-            Body: file.buffer,
-            ACL: 'public-read',
+            Expires: 60 * 5,
+            ContentType: 'image/jpeg',
         };
 
-        const data = await this.s3.upload(params).promise();
-        return data.Location;
+        const url = await this.s3.getSignedUrlPromise('putObject', params);
+
+        return { url, key };
     }
 
-    async uploadFile(file: Express.Multer.File): Promise<string | void>  {
-        const fileExtension = file.originalname.split('.').pop();
-        const fileName = `${uuidv4()}.${fileExtension}`;
-        let fileBuffer = file.buffer;
+    async deletePhoto(keys: string[]): Promise<void> {
+        const params = {
+            Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
+            Delete: {
+                Objects: keys.map(key => ({ Key: key })),
+                Quiet: false,
+            }
+        };
 
-        if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
-            fileBuffer = await this.processImage(file);
-        } else if (file.mimetype === 'text/plain' && file.size > 100 * 1024) {
-            throw new BadRequestException('Text files cannot exceed 100 kB');
-        } else if (!file.mimetype.match(/\/(jpg|jpeg|png|gif|plain)$/)) {
-            throw new BadRequestException('Invalid file type');
-        }
-
-        const fileUrl = await this.uploadFileToS3({ ...file, buffer: fileBuffer }, fileName).catch(err => {
-            throw new BadRequestException('Error saving file');
-        })
-
-        return fileUrl;
+        await this.s3.deleteObjects(params).promise().catch(err => {
+            throw new BadRequestException('Error deleting file');
+        });
     }
 }
