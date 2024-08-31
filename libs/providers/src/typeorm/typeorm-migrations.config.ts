@@ -7,16 +7,18 @@ config({ path: join(process.cwd(), '.env') });
 const configService = new ConfigService();
 
 const options = (): DataSourceOptions => {
-    const url = configService.get<string>('POSTGRES_URL')
-    if (!url){
+    const url = configService.get('POSTGRES_URL');
+    if (!url) {
         throw new Error('Database URL is empty');
     }
     return {
         url,
         type: 'postgres',
         schema: 'public',
-        logging: configService.get('IS_PROD') === false,
-        entities: [join(process.cwd(), 'dist', 'libs', 'entities', '**', '*.entity.js')],
+        logging: configService.get('IS_PROD') === 'false',
+        entities: [
+            join(process.cwd(), 'dist', 'libs', 'entities', '**', '*.entity.{ts,js}'),
+        ],
         migrations: [join(process.cwd(), 'migrations', 'js', '*migration.js')],
         migrationsRun: true,
         migrationsTableName: 'migrations',

@@ -36,41 +36,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InitialMigrationMigration1724917164672 = void 0;
-var InitialMigrationMigration1724917164672 = /** @class */ (function () {
-    function InitialMigrationMigration1724917164672() {
-        this.name = 'InitialMigrationMigration1724917164672';
+exports.RemoveLevelColumnMigration1725098218377 = void 0;
+var RemoveLevelColumnMigration1725098218377 = /** @class */ (function () {
+    function RemoveLevelColumnMigration1725098218377() {
+        this.name = 'RemoveLevelColumnMigration1725098218377';
     }
-    InitialMigrationMigration1724917164672.prototype.up = function (queryRunner) {
+    RemoveLevelColumnMigration1725098218377.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("CREATE TABLE \"comment_entity\" (\"id\" uuid NOT NULL, \"user_name\" character varying NOT NULL, \"email\" character varying NOT NULL, \"home_page\" character varying, \"text\" character varying NOT NULL, \"photo\" character varying, \"post_id\" character varying NOT NULL, \"parent_comment\" uuid, \"created_at\" character varying NOT NULL, \"updated_at\" character varying NOT NULL, CONSTRAINT \"PK_5a439a16c76d63e046765cdb84f\" PRIMARY KEY (\"id\"))")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"comment_entity\" DROP COLUMN \"level\"")];
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"comment_entity\" ADD CONSTRAINT \"FK_efbd1217a3a3466e841f1f5631f\" FOREIGN KEY (\"parent_comment\") REFERENCES \"comment_entity\"(\"id\") ON DELETE NO ACTION ON UPDATE NO ACTION")];
-                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    InitialMigrationMigration1724917164672.prototype.down = function (queryRunner) {
+    RemoveLevelColumnMigration1725098218377.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"comment_entity\" DROP CONSTRAINT \"FK_efbd1217a3a3466e841f1f5631f\"")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"comment_entity\" ADD \"level\" integer NOT NULL")];
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("DROP TABLE \"comment_entity\"")];
-                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return InitialMigrationMigration1724917164672;
+    return RemoveLevelColumnMigration1725098218377;
 }());
-exports.InitialMigrationMigration1724917164672 = InitialMigrationMigration1724917164672;
+exports.RemoveLevelColumnMigration1725098218377 = RemoveLevelColumnMigration1725098218377;
