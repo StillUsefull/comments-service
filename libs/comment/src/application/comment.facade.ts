@@ -9,6 +9,8 @@ import {GetCommentsQuery} from "@lib/comment/application/queries/get-comments/qu
 import {GetCommentsHandler} from "@lib/comment/application/queries/get-comments/handler";
 import {GetCommentQuery} from "@lib/comment/application/queries/get-comment/query";
 import {GetCommentHandler} from "@lib/comment/application/queries/get-comment/handler";
+import {DeleteCommentCommand} from "@lib/comment/application/commands/delete-comment/command";
+import {DeleteCommentHandler} from "@lib/comment/application/commands/delete-comment/handler";
 
 
 @Injectable()
@@ -28,11 +30,17 @@ export class CommentFacade {
         return this.commandBus.execute<UpdateCommentCommand, UpdateCommentHandler['execute']>(new UpdateCommentCommand(comment));
     }
 
+    deleteComment(id: string){
+        return this.commandBus.execute<DeleteCommentCommand, DeleteCommentHandler['execute']>(new DeleteCommentCommand(id))
+    }
+
     getComments(postId: string){
         return this.queryBus.execute<GetCommentsQuery, GetCommentsHandler['execute']>(new GetCommentsQuery(postId))
     }
 
     getComment(id: string){
-        return this.queryBus.execute<GetCommentQuery, GetCommentHandler['execute']>(new GetCommentQuery(id))
+        return this.queryBus.execute<
+            GetCommentQuery,
+            Awaited<ReturnType<GetCommentHandler['execute']>>>(new GetCommentQuery(id))
     }
 }

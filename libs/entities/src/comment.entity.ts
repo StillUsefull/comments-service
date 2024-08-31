@@ -1,8 +1,17 @@
-import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn} from "typeorm";
+import {
+    Column,
+    Entity,
+    PrimaryColumn,
+    Tree,
+    TreeChildren,
+    TreeLevelColumn,
+    TreeParent
+} from "typeorm";
 
 
 
 @Entity()
+@Tree('materialized-path')
 export class CommentEntity {
     @PrimaryColumn('uuid')
     id: string;
@@ -31,10 +40,10 @@ export class CommentEntity {
     @Column({ name: 'updated_at' })
     updatedAt: string;
 
-    @ManyToOne(() => CommentEntity, comment => comment.children, {nullable: true})
-    @JoinColumn({name: 'parent_comment'})
-    parent?: CommentEntity;
+    @TreeChildren()
+    children: CommentEntity[];
 
-    @OneToMany(() => CommentEntity, comment => comment.parent)
-    children?: CommentEntity[];
+    @TreeParent()
+    parent: CommentEntity;
+
 }
