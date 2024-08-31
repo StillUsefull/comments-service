@@ -5,6 +5,7 @@ export interface IComment {
     username: string;
     email: string;
     homepage?: string;
+    userId: string;
     text: string;
     photo?: string;
     postId: string;

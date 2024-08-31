@@ -20,22 +20,26 @@ export class AuthService {
         return this.userFacade.createUser(user);
     }
 
-    async login(user: LoginUserDto, userAgent){
+    async login(user: LoginUserDto, userAgent: string) {
         const _user = await this.userFacade.getUser(user);
-        if (!_user){
+        if (!_user) {
             throw new UnauthorizedException('Invalid credentials');
         }
-        const id = uuidv4();
+
+        const sessionId = uuidv4();
         const ttl = this.configService.get<string>('JWT_TTL');
-        const payload = {sub: id, userAgent};
+
+        const payload = { sub: sessionId, userAgent };
         const token = this.jwtService.sign(payload);
-        await this.cacheManager.set(id, {
+
+        await this.cacheManager.set(sessionId, {
             username: _user.username,
             email: _user.email,
             userId: _user._id,
-            userAgent
-        }, convertTimeToMilliseconds(ttl))
-        return token;
+            userAgent,
+        }, convertTimeToMilliseconds(ttl));
+
+        return { token, userId: _user._id };
     }
 
     async validateUser({ sub, userAgent }: ICurrentUser) {

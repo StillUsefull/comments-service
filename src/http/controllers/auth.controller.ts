@@ -19,10 +19,11 @@ export class AuthController {
     @Post('login')
     async loginUser(@Body() user: LoginUserDto, @Req() request: Request) {
         const userAgent = request.headers['user-agent'] || 'unknown';
-        const token = await this.authService.login(user, userAgent);
+        const {token, userId} = await this.authService.login(user, userAgent);
         return {
             message: 'Login successful',
             token,
+            wsId: userId
         };
     }
 }

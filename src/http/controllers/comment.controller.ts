@@ -6,40 +6,44 @@ import {
     Param,
     Post,
     Put, UnauthorizedException,
-    UploadedFile,
     UseGuards,
-    UseInterceptors
 } from "@nestjs/common";
 import {CommentFacade} from "@lib/comment/application/comment.facade";
 import {CreateCommentDto, UpdateCommentDto} from "../dtos";
 import {JwtGuard} from "@lib/auth/guards/jwt.guard";
 import {CurrentUser, Public} from "@lib/auth/decorators";
-import {FileInterceptor} from "@nestjs/platform-express";
-import {FilesService} from "@lib/files";
-import {multerOptions} from "@lib/files/files.options";
 import {Cache, CACHE_MANAGER} from "@nestjs/cache-manager";
 import {ICachePayload, ICurrentUser} from "@lib/auth/interfaces";
+import {UserFacade} from "@lib/user/application/user.facade";
+import {SendNotificationDto} from "@lib/user/application/events/dtos";
 
 @UseGuards(JwtGuard)
 @Controller('comment')
 export class CommentController {
     constructor(
         private readonly commentFacade: CommentFacade,
-        private readonly filesService: FilesService,
+        private readonly userFacade: UserFacade,
         @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) {}
 
     @Post('/:postId')
-    @UseInterceptors(FileInterceptor('file', multerOptions))
     async create(
         @Body() comment: CreateCommentDto,
         @Param('postId') postId: string,
         @CurrentUser() user: ICurrentUser
     ){
+        const {userId, username, email} = await this.cacheManager.get<ICachePayload>(user.sub);
+        const _comment = await this.commentFacade.createComment({...comment, postId, username, email, userId });
+        if (comment.parentComment) {
+            const _parentComment = await this.commentFacade.getComment(comment.parentComment);
+            const sendNotificationParams: SendNotificationDto = {
+                    userId: _parentComment.userId,
+                    comment: _comment.text,
+            };
+            await this.userFacade.sendNotification(sendNotificationParams);
+        }
 
-
-        const {username, email} = await this.cacheManager.get<ICachePayload>(user.sub)
-        return this.commentFacade.createComment({...comment, postId, username, email })
+        return _comment;
     }
 
     @Put('/:id')

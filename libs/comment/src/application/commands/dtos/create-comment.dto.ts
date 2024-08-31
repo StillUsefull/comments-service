@@ -12,6 +12,10 @@ export class CreateCommentDto {
     email: string;
 
     @IsString()
+    @IsNotEmpty()
+    userId: string;
+
+    @IsString()
     @IsOptional()
     @IsUrl()
     homepage?: string;
