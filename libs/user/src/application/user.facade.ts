@@ -9,9 +9,6 @@ import {DeleteUserCommand} from "./commands/delete-user/command";
 import {DeleteUserHandler} from "./commands/delete-user/handler";
 import {GetUserQuery} from "./queries/get-user/query";
 import {GetUserHandler} from "./queries/get-user/handler";
-import {SendNotificationDto} from "@lib/user/application/events/dtos";
-import {SendNotificationEvent} from "@lib/user/application/events/send-notification/event";
-
 @Injectable()
 export class UserFacade {
     constructor(
@@ -39,7 +36,5 @@ export class UserFacade {
             >(new GetUserQuery(user))
     }
 
-    sendNotification(dto: SendNotificationDto){
-        return this.eventsBus.publish<SendNotificationEvent>(new SendNotificationEvent(dto))
-    }
+
 }

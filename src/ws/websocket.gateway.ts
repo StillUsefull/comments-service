@@ -2,6 +2,7 @@ import {Injectable, OnModuleInit, OnModuleDestroy, Inject} from '@nestjs/common'
 import { WebSocketServer } from '@nestjs/websockets';
 import * as WebSocket from 'ws';
 import {Cache, CACHE_MANAGER} from "@nestjs/cache-manager";
+import {SendNotificationDto} from "./dtos";
 
 @Injectable()
 export class WebsocketGateway implements OnModuleInit, OnModuleDestroy {
@@ -42,7 +43,7 @@ export class WebsocketGateway implements OnModuleInit, OnModuleDestroy {
         }
     }
 
-    sendReplyNotification(wsId: string, message: string) {
+    sendReplyNotification({wsId, message}: SendNotificationDto) {
         const connections = this.activeUsers.get(wsId);
         if (connections) {
             connections.forEach(ws => {

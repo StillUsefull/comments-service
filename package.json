@@ -27,11 +27,14 @@
     "migration:revert": "npm run typeorm:config migration:revert"
   },
   "dependencies": {
+    "@apollo/server": "^4.11.0",
+    "@nestjs/apollo": "^12.2.0",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.3",
     "@nestjs/core": "^10.0.0",
     "@nestjs/cqrs": "^10.2.7",
+    "@nestjs/graphql": "^12.2.0",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mongoose": "^10.0.10",
     "@nestjs/passport": "^10.0.3",
@@ -43,6 +46,7 @@
     "cache-manager-redis-store": "^2.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "graphql": "^16.9.0",
     "lodash": "^4.17.21",
     "mongoose": "^8.6.0",
     "multer": "^1.4.5-lts.1",
@@ -115,7 +119,8 @@
       "^@lib/user(|/.*)$": "<rootDir>/libs/user/src/$1",
       "^@lib/auth(|/.*)$": "<rootDir>/libs/auth/src/$1",
       "^@lib/shared(|/.*)$": "<rootDir>/libs/shared/src/$1",
-      "^@lib/files(|/.*)$": "<rootDir>/libs/files/src/$1"
+      "^@lib/files(|/.*)$": "<rootDir>/libs/files/src/$1",
+      "^@lib/errors(|/.*)$": "<rootDir>/libs/errors/src/$1"
     }
   }
 }

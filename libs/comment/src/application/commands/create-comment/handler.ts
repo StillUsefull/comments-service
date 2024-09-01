@@ -8,11 +8,12 @@ import {WebsocketGateway} from "@lib/providers/ws/websocket.gateway";
 
 @CommandHandler(CreateCommentCommand)
 export class CreateCommentHandler implements ICommandHandler<CreateCommentCommand, CommentAggregate> {
-    constructor(private readonly repository: CommentRepository, private readonly wsGateway: WebsocketGateway) {}
+    constructor(private readonly repository: CommentRepository) {}
     async execute({comment}: CreateCommentCommand): Promise<CommentAggregate>{
         const aggregate = CommentAggregate.create(comment);
         try {
-            await this.repository.create(aggregate);
+            const comment = await this.repository.create(aggregate);
+            return comment
         } catch (err) {
             throw new BadRequestException(err);
         }

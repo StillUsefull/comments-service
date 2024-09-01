@@ -26,6 +26,8 @@
     "@lib/shared/(.*)": "<rootDir>/../libs/shared/src/$1",
     "@lib/shared": "<rootDir>/../libs/shared/src",
     "@lib/files/(.*)": "<rootDir>/../libs/files/src/$1",
-    "@lib/files": "<rootDir>/../libs/files/src"
+    "@lib/files": "<rootDir>/../libs/files/src",
+    "@lib/errors/(.*)": "<rootDir>/../libs/errors/src/$1",
+    "@lib/errors": "<rootDir>/../libs/errors/src"
   }
 }
