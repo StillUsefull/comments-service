@@ -3,6 +3,7 @@ import {IsUUID, IsString, IsNotEmpty, IsEmail, IsUrl, validateSync, IsOptional} 
 import {BadRequestException} from "@nestjs/common";
 import {validateTagsAndAttributes} from "@lib/comment/domain/markdown.rules";
 import { v4 as uuidv4 } from 'uuid';
+import { Exclude } from "class-transformer";
 export class CommentAggregate implements IComment {
     @IsUUID()
     id: string = uuidv4();

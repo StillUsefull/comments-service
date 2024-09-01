@@ -1,6 +1,7 @@
-import {Controller, Get, UseGuards} from "@nestjs/common";
+import {Body, Controller, Post, UseGuards} from "@nestjs/common";
 import {FilesService} from "@lib/files";
 import {JwtGuard} from "@lib/auth/guards/jwt.guard";
+import { GetFileDto } from "../dtos/get-file.dto";
 
 @Controller('file')
 export class FileController {
@@ -9,8 +10,8 @@ export class FileController {
     }
 
     @UseGuards(JwtGuard)
-    @Get()
-    getUrl(){
-        return this.fileService.generatePresignedUrl()
+    @Post()
+    getUrl(@Body() params: GetFileDto){
+        return this.fileService.generatePresignedUrl({mimetype: params.mimetype, extension: params.extension})
     }
 }

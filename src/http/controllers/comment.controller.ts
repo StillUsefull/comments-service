@@ -17,6 +17,8 @@ import {ICachePayload, ICurrentUser} from "@lib/auth/interfaces";
 import {UserFacade} from "@lib/user/application/user.facade";
 import {SendNotificationDto} from "../../ws/dtos";
 import {WebsocketGateway} from "../../ws/websocket.gateway";
+import { CommentResponseDto } from "../dtos/comment.response";
+import { plainToClass } from "class-transformer";
 
 @UseGuards(JwtGuard)
 @Controller('comment')
@@ -45,7 +47,7 @@ export class CommentController {
             await this.websocketGateway.sendReplyNotification(sendNotificationParams);
         }
 
-        return _comment;
+        return plainToClass(CommentResponseDto, _comment);
     }
 
     @Put('/:id')
@@ -81,8 +83,9 @@ export class CommentController {
 
     @Public()
     @Get('/:postId')
-    getAll(@Param('postId') postId: string){
-        return this.commentFacade.getComments(postId);
+    async getAll(@Param('postId') postId: string){
+        const comments = await this.commentFacade.getComments(postId);
+        return plainToClass(CommentResponseDto, comments, { excludeExtraneousValues: true });
     }
 
     @Public()

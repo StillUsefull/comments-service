@@ -23,7 +23,11 @@ export class WebsocketGateway implements OnModuleInit, OnModuleDestroy {
                 }
                 this.activeUsers.get(wsId)?.add(ws);
                 ws.on('close', () => this.handleDisconnect(wsId, ws));
+            } else {
+                ws.close()
             }
+
+            
         });
     }
 

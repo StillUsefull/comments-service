@@ -1,7 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
+import { IMimetype } from './interfaces/mimetype.interface';
 
 @Injectable()
 export class FilesService {
@@ -18,21 +19,34 @@ export class FilesService {
     }
 
 
-    async generatePresignedUrl(): Promise<{ url: string, key: string }> {
-        const fileName = `${uuidv4()}`;
-
-        const key = `${fileName}`;
-
+    async generatePresignedUrl(mimetype: IMimetype): Promise<{ url: string, fileName: string }> {
+        const validMimeTypes = {
+            'image/jpeg': ['jpg', 'jpeg'],
+            'image/gif': ['gif'],
+            'image/png': ['png'],
+            'text/plain': ['txt'],
+        };
+    
+        if (!validMimeTypes[mimetype.mimetype] || !validMimeTypes[mimetype.mimetype].includes(mimetype.extension)) {
+            throw new BadRequestException('Invalid MIME type or extension');
+        }
+        const fileName = `${uuidv4()}.${mimetype.extension}`;
+    
         const params = {
             Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
-            Key: key,
-            Expires: 60 * 5,
-            ContentType: 'image/jpeg',
+            Key: fileName,
+            Expires: 60 * 5, 
+            'ACL': 'public-read', 
+            ContentType: mimetype.mimetype, 
         };
-
-        const url = await this.s3.getSignedUrlPromise('putObject', params);
-
-        return { url, key };
+    
+        try {
+            const url = await this.s3.getSignedUrlPromise('putObject', params);
+            return { url, fileName };
+        } catch (error) {
+            console.error('Error generating presigned URL', error);
+            throw new InternalServerErrorException('Error generating presigned URL');
+        }
     }
 
     async deletePhoto(keys: string[]): Promise<void> {
