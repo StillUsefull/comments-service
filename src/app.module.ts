@@ -6,6 +6,7 @@ import {ConfigModule} from "@nestjs/config";
 import {join} from "path";
 import { GraphqlModule } from './graphql/graphql.module';
 import {WebsocketModule} from "./ws/websocket.module";
+import { RabbitControllersModule } from './rabbitmq/rabbitmq.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import {WebsocketModule} from "./ws/websocket.module";
       HttpModule,
       ProvidersModule,
       WebsocketModule,
-      GraphqlModule],
+      GraphqlModule,
+      RabbitControllersModule],
   controllers: [],
   providers: [],
 })
