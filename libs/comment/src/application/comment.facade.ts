@@ -23,19 +23,19 @@ export class CommentFacade {
     ){}
 
     createComment(comment: CreateCommentDto){
-        return this.commandBus.execute<CreateCommentCommand, CreateCommentHandler['execute']>(new CreateCommentCommand(comment));
+        return this.commandBus.execute<CreateCommentCommand, Awaited<ReturnType<CreateCommentHandler['execute']>>>(new CreateCommentCommand(comment));
     }
 
     updateComment(comment: UpdateCommentDto){
-        return this.commandBus.execute<UpdateCommentCommand, UpdateCommentHandler['execute']>(new UpdateCommentCommand(comment));
+        return this.commandBus.execute<UpdateCommentCommand, Awaited<ReturnType<UpdateCommentHandler['execute']>>>(new UpdateCommentCommand(comment));
     }
 
     deleteComment(id: string){
-        return this.commandBus.execute<DeleteCommentCommand, DeleteCommentHandler['execute']>(new DeleteCommentCommand(id))
+        return this.commandBus.execute<DeleteCommentCommand, Awaited<ReturnType<DeleteCommentHandler['execute']>>>(new DeleteCommentCommand(id))
     }
 
     getComments(postId: string){
-        return this.queryBus.execute<GetCommentsQuery, GetCommentsHandler['execute']>(new GetCommentsQuery(postId))
+        return this.queryBus.execute<GetCommentsQuery, Awaited<ReturnType<GetCommentsHandler['execute']>>>(new GetCommentsQuery(postId))
     }
 
     getComment(id: string){

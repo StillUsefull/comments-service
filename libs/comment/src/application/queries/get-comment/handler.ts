@@ -9,7 +9,8 @@ export class GetCommentHandler implements IQueryHandler<GetCommentQuery, Comment
     constructor(private readonly repository: CommentRepository) {}
     async execute({id}: GetCommentQuery): Promise<CommentAggregate>{
         try {
-            return this.repository.findOne(id)
+            const comment = await this.repository.findOne(id)
+            return comment;
         } catch (err) {
             throw new NotFoundException(`Can not find this comment`);
         }

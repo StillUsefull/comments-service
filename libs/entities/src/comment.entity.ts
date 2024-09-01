@@ -25,6 +25,9 @@ export class CommentEntity {
     @Column({name: 'home_page', nullable: true})
     homepage?: string;
 
+    @Column({name: 'user_id'})
+    userId: string;
+
     @Column()
     text: string;
 

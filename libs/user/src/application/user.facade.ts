@@ -9,7 +9,6 @@ import {DeleteUserCommand} from "./commands/delete-user/command";
 import {DeleteUserHandler} from "./commands/delete-user/handler";
 import {GetUserQuery} from "./queries/get-user/query";
 import {GetUserHandler} from "./queries/get-user/handler";
-
 @Injectable()
 export class UserFacade {
     constructor(
@@ -36,4 +35,6 @@ export class UserFacade {
             Awaited<ReturnType<GetUserHandler['execute']>>
             >(new GetUserQuery(user))
     }
+
+
 }

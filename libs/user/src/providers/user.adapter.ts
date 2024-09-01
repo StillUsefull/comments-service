@@ -31,7 +31,7 @@ export class UserAdapter implements UserRepository {
         Object.assign(existingUser, user, { updatedAt: new Date().toISOString() });
         await existingUser.save();
 
-        return UserAggregate.create(existingUser as IUser);
+        return UserAggregate.create({...existingUser, _id: existingUser._id.toString()});
     };
 
     async delete(id: string): Promise<boolean>{
@@ -42,8 +42,9 @@ export class UserAdapter implements UserRepository {
     async findOne(query: Partial<IUser>): Promise<UserAggregate> {
         const user = await this.userModel.findOne({...query}).exec();
         if (!user) {
-            throw new NotFoundException(`User not found with criteria: ${JSON.stringify(query)}`);
+            throw new NotFoundException(`User not found with this credentials`);
         }
-        return UserAggregate.create(user as IUser);
+        const userObj = user.toObject();
+        return UserAggregate.create(userObj);
     }
 }
