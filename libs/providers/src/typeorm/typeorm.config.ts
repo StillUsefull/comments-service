@@ -13,8 +13,9 @@ const options = (): DataSourceOptions => {
         url,
         type: 'postgres',
         schema: 'public',
-        logging: configService.get('IS_PROD') === 'false',
+        logging: configService.get<string>('IS_PROD') === 'false',
         entities: [CommentEntity],
+        synchronize: configService.get<string>('IS_PROD') === 'false',
         migrationsRun: true,
         migrationsTableName: 'migrations',
     };

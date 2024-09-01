@@ -17,6 +17,7 @@ export class AuthController {
 
     @Post('login')
     async loginUser(@Body() user: LoginUserDto, @Req() request: Request) {
+
         const userAgent = request.headers['user-agent'] || 'unknown';
         const {token, userId} = await this.authService.login(user, userAgent);
         return {

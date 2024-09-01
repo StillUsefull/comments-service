@@ -42,8 +42,9 @@ export class UserAdapter implements UserRepository {
     async findOne(query: Partial<IUser>): Promise<UserAggregate> {
         const user = await this.userModel.findOne({...query}).exec();
         if (!user) {
-            throw new NotFoundException(`User not found with criteria: ${JSON.stringify(query)}`);
+            throw new NotFoundException(`User not found with this credentials`);
         }
-        return UserAggregate.create({...user, _id: user._id.toString()});
+        const userObj = user.toObject();
+        return UserAggregate.create(userObj);
     }
 }
