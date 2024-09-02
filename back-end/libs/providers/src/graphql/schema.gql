@@ -1,0 +1,70 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Comment {
+  children: [Comment!]!
+  createdAt: String!
+  email: String!
+  homepage: String
+  id: ID!
+  parent: Comment!
+  photo: String
+  postId: String!
+  text: String!
+  updatedAt: String!
+  userId: String!
+  username: String!
+}
+
+input CreateCommentInput {
+  homepage: String
+  parentComment: String
+  photo: String
+  text: String!
+}
+
+type LoginResponse {
+  message: String!
+  token: String!
+  wsId: String!
+}
+
+input LoginUserInput {
+  email: String!
+  username: String!
+}
+
+type Mutation {
+  createComment(createCommentInput: CreateCommentInput!, postId: String!): Comment!
+  deleteComment(id: String!): String!
+  loginUser(user: LoginUserInput!): LoginResponse!
+  registerUser(user: RegisterUserInput!): RegisterResponse!
+  updateComment(id: String!, updateCommentInput: UpdateCommentInput!): Comment!
+}
+
+type Query {
+  getComment(id: String!): Comment!
+  getComments(
+    """Number of items to fetch"""
+    limit: Int! = 25
+
+    """Number of items to skip"""
+    offset: Int! = 0
+    postId: String!
+  ): [Comment!]!
+}
+
+type RegisterResponse {
+  message: String!
+}
+
+input RegisterUserInput {
+  email: String!
+  username: String!
+}
+
+input UpdateCommentInput {
+  homepage: String
+  text: String
+}

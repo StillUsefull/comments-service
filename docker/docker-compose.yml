@@ -19,31 +19,50 @@ services:
 
   comments_service:
     container_name: comments_service_container
-    build: ..
+    build:
+      context: ../back-end
     environment:
-      POSTGRES_URL:
-      MONGODB_URL:
-      REDIS_HOST:
-      REDIS_PORT:
-      JWT_SECRET:
-      JWT_TTL:
+      POSTGRES_URL: postgres://postgres:123456@postgres_comments:5432/postgres_db
+      MONGODB_URL: 
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: somesecret
+      JWT_TTL: 1d
       IS_PROD: false
-      AWS_ACCESS_KEY_ID:
-      AWS_SECRET_ACCESS_KEY:
-      AWS_REGION:
-      AWS_S3_BUCKET_NAME:
-      RABBIT_URL:
-      RABBIT_QUEUE: 
+      AWS_ACCESS_KEY_ID: 
+      AWS_SECRET_ACCESS_KEY: 
+      AWS_REGION: 
+      AWS_S3_BUCKET_NAME: 
+      AWS_BASE_URL: 
+      RABBIT_URL: amqp://rabbitmq:5672
+      RABBIT_QUEUE: main_queue
     depends_on:
       - postgres_comments
       - redis
       - rabbitmq
     ports:
       - "3000:3000"
+      - "8080:8080"
     networks:
       - postgres_comments
       - redis
       - rabbitmq
+      - client-server
+    restart: unless-stopped
+
+  comments_client:
+    container_name: comments_client_container
+    build:
+      context: ../front-end
+    environment:
+      BASE_URL: http://comments_service:3000
+      BASE_WS: comments_service:8080
+    ports:
+      - "3001:3001"
+    networks:
+      - client-server
+    depends_on:
+      - comments_service
     restart: unless-stopped
 
   redis:
@@ -74,6 +93,8 @@ networks:
   redis:
     driver: bridge
   rabbitmq:
+    driver: bridge
+  client-server:
     driver: bridge
 
 volumes:
