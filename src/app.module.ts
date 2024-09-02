@@ -7,6 +7,7 @@ import {join} from "path";
 import { GraphqlModule } from './graphql/graphql.module';
 import {WebsocketModule} from "./ws/websocket.module";
 import { RabbitControllersModule } from './rabbitmq/rabbitmq.module';
+import {ErrorsModule} from "@lib/errors";
 
 @Module({
   imports: [
@@ -19,7 +20,9 @@ import { RabbitControllersModule } from './rabbitmq/rabbitmq.module';
       ProvidersModule,
       WebsocketModule,
       GraphqlModule,
-      RabbitControllersModule],
+      RabbitControllersModule,
+      ErrorsModule
+  ],
   controllers: [],
   providers: [],
 })

@@ -45,7 +45,14 @@ type Mutation {
 
 type Query {
   getComment(id: String!): Comment!
-  getComments(postId: String!): [Comment!]!
+  getComments(
+    """Number of items to fetch"""
+    limit: Int! = 15
+
+    """Number of items to skip"""
+    offset: Int! = 0
+    postId: String!
+  ): [Comment!]!
 }
 
 type RegisterResponse {

@@ -8,9 +8,9 @@ import {NotFoundException} from "@nestjs/common";
 export class GetCommentsHandler implements IQueryHandler<GetCommentsQuery, CommentAggregate[]>{
     constructor(private readonly repository: CommentRepository) {
     }
-    async execute({postId}: GetCommentsQuery): Promise<CommentAggregate[]> {
+    async execute({postId, pagination}: GetCommentsQuery): Promise<CommentAggregate[]> {
         try {
-            return this.repository.findAll(postId)
+            return this.repository.findAll(postId, pagination)
         } catch (err) {
             throw new NotFoundException(`Can not find any comment to post with id ${postId}`);
         }

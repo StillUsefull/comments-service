@@ -1,12 +1,16 @@
 import {
     Body,
-    Controller, Delete,
+    Controller,
+    Delete,
     Get,
-    Inject, NotFoundException,
+    Inject,
+    NotFoundException,
     Param,
     Post,
-    Put, UnauthorizedException,
+    Put,
+    UnauthorizedException,
     UseGuards,
+    Query
 } from "@nestjs/common";
 import {CommentFacade} from "@lib/comment/application/comment.facade";
 import {CreateCommentDto, UpdateCommentDto} from "../dtos";
@@ -18,7 +22,9 @@ import {UserFacade} from "@lib/user/application/user.facade";
 import {SendNotificationDto} from "../../ws/dtos";
 import {WebsocketGateway} from "../../ws/websocket.gateway";
 import { CommentResponseDto } from "../dtos/comment.response";
-import { plainToClass } from "class-transformer";
+import {plainToClass, plainToInstance} from "class-transformer";
+import {ConfigService} from "@nestjs/config";
+import {PaginationDto} from '@lib/shared/dtos/pagination.dto'
 
 @UseGuards(JwtGuard)
 @Controller('comment')
@@ -27,7 +33,8 @@ export class CommentController {
         private readonly commentFacade: CommentFacade,
         private readonly userFacade: UserFacade,
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
-        private readonly websocketGateway: WebsocketGateway
+        private readonly websocketGateway: WebsocketGateway,
+        private readonly configService: ConfigService
     ) {}
 
     @Post('/:postId')
@@ -36,7 +43,11 @@ export class CommentController {
         @Param('postId') postId: string,
         @HttpCurrentUser() user: ICurrentUser
     ){
+
         const {userId, username, email} = await this.cacheManager.get<ICachePayload>(user.sub);
+        if (comment?.photo){
+            comment.photo = `${this.configService.get<string>('AWS_BASE_URL')}${comment.photo}`;
+        }
         const _comment = await this.commentFacade.createComment({...comment, postId, username, email, userId });
         if (comment.parentComment) {
             const _parentComment = await this.commentFacade.getComment(comment.parentComment);
@@ -83,8 +94,9 @@ export class CommentController {
 
     @Public()
     @Get('/:postId')
-    async getAll(@Param('postId') postId: string){
-        const comments = await this.commentFacade.getComments(postId);
+    async getAll(@Param('postId') postId: string,  @Query() query?: PaginationDto){
+        const pagination = plainToInstance(PaginationDto, query);
+        const comments = await this.commentFacade.getComments(postId, pagination);
         return plainToClass(CommentResponseDto, comments, { excludeExtraneousValues: true });
     }
 

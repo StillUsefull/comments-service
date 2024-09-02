@@ -21,19 +21,20 @@ services:
     container_name: comments_service_container
     build: ..
     environment:
-      POSTGRES_URL:
+      POSTGRES_URL: postgres://postgres:123456@postgres_comments:5432/postgres_db
       MONGODB_URL:
-      REDIS_HOST:
-      REDIS_PORT:
-      JWT_SECRET:
-      JWT_TTL:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: somesecret
+      JWT_TTL: 1d
       IS_PROD: false
       AWS_ACCESS_KEY_ID:
       AWS_SECRET_ACCESS_KEY:
       AWS_REGION:
       AWS_S3_BUCKET_NAME:
-      RABBIT_URL:
-      RABBIT_QUEUE: 
+      AWS_BASE_URL:
+      RABBIT_URL: amqp://rabbitmq:5672
+      RABBIT_QUEUE: main_queue
     depends_on:
       - postgres_comments
       - redis

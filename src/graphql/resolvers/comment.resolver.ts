@@ -10,6 +10,8 @@ import { ICachePayload, ICurrentUser } from '@lib/auth/interfaces';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import {SendNotificationDto} from "../../ws/dtos";
 import {WebsocketGateway} from "../../ws/websocket.gateway";
+import {PaginationDto} from "@lib/shared/dtos/pagination.dto";
+import {plainToInstance} from "class-transformer";
 
 @Resolver(() => Comment)
 export class CommentResolver {
@@ -84,9 +86,11 @@ export class CommentResolver {
     @Public()
     @Query(() => [Comment])
     async getComments(
-        @Args('postId') postId: string
+        @Args('postId') postId: string,
+        @Args() query: PaginationDto
     ): Promise<Comment[]> {
-        return this.commentFacade.getComments(postId);
+        const pagination = plainToInstance(PaginationDto, query);
+        return this.commentFacade.getComments(postId, pagination);
     }
 
     @Public()

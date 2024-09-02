@@ -4,6 +4,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {CommentEntity} from "@lib/entities";
 import {IsNull, TreeRepository} from "typeorm";
 import {CommentAggregate, IComment} from "@lib/comment/domain";
+import {PaginationDto} from "@lib/shared/dtos/pagination.dto";
 
 
 @Injectable()
@@ -65,15 +66,15 @@ export class CommentAdapter implements CommentRepository {
         return photos;
     }
 
-    async findAll(postId: string, page: number = 1, pageSize: number = 10): Promise<CommentAggregate[]> {
-        const skip = (page - 1) * pageSize;
-        const take = pageSize;
+    async findAll(postId: string, pagination: PaginationDto): Promise<CommentAggregate[]> {
+
+        const { offset, limit } = pagination;
 
         const rootComments = await this.repository.find({
             where: { postId, parent: IsNull() },
-            skip,
-            take,
-            order: { createdAt: 'ASC' },
+            skip: offset,
+            take: limit,
+            order: { updatedAt: 'DESC' },
         });
 
         const trees = await Promise.all(
@@ -81,6 +82,7 @@ export class CommentAdapter implements CommentRepository {
         );
 
         return trees.map(tree => CommentAggregate.create(tree));
+
     }
 
 

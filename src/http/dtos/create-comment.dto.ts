@@ -1,5 +1,5 @@
 
-import { IsString, IsEmail, IsOptional, IsUUID, IsNotEmpty, IsUrl } from 'class-validator';
+import { IsString, IsOptional, IsUUID, IsNotEmpty, IsUrl } from 'class-validator';
 
 export class CreateCommentDto {
 
@@ -12,7 +12,7 @@ export class CreateCommentDto {
     @IsNotEmpty()
     text: string;
 
-    @IsUrl()
+    @IsString()
     @IsOptional()
     photo?: string;
 

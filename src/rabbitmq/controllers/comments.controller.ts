@@ -5,6 +5,9 @@ import {EventPattern, Payload} from "@nestjs/microservices";
 import {CreateCommentDto} from "../dtos/create-comment.dto";
 import {SendNotificationDto} from "../../ws/dtos";
 import {UpdateCommentDto} from "../dtos/update-comment.dto";
+import {plainToInstance} from "class-transformer";
+import {PaginationDto} from "@lib/shared/dtos/pagination.dto";
+import {GetCommentsDto} from "../dtos/get-comments.dto";
 
 
 @Controller()
@@ -49,8 +52,10 @@ export class CommentsController {
     }
 
     @EventPattern('get_all_comments')
-    async getAll(@Payload('postId') postId: string) {
-        return this.commentFacade.getComments(postId);
+    async getAll(@Payload('postId') payload: GetCommentsDto) {
+        const { postId, query } = payload;
+        const pagination = plainToInstance(PaginationDto, query);
+        return this.commentFacade.getComments(postId, pagination);
     }
 
     @EventPattern('get_one_comment')

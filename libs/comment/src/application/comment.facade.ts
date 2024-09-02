@@ -11,6 +11,7 @@ import {GetCommentQuery} from "@lib/comment/application/queries/get-comment/quer
 import {GetCommentHandler} from "@lib/comment/application/queries/get-comment/handler";
 import {DeleteCommentCommand} from "@lib/comment/application/commands/delete-comment/command";
 import {DeleteCommentHandler} from "@lib/comment/application/commands/delete-comment/handler";
+import {PaginationDto} from "@lib/shared/dtos/pagination.dto";
 
 
 @Injectable()
@@ -34,8 +35,8 @@ export class CommentFacade {
         return this.commandBus.execute<DeleteCommentCommand, Awaited<ReturnType<DeleteCommentHandler['execute']>>>(new DeleteCommentCommand(id))
     }
 
-    getComments(postId: string){
-        return this.queryBus.execute<GetCommentsQuery, Awaited<ReturnType<GetCommentsHandler['execute']>>>(new GetCommentsQuery(postId))
+    getComments(postId: string, pagination: PaginationDto){
+        return this.queryBus.execute<GetCommentsQuery, Awaited<ReturnType<GetCommentsHandler['execute']>>>(new GetCommentsQuery(postId, pagination))
     }
 
     getComment(id: string){
