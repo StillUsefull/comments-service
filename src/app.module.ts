@@ -8,6 +8,7 @@ import { GraphqlModule } from './graphql/graphql.module';
 import {WebsocketModule} from "./ws/websocket.module";
 import { RabbitControllersModule } from './rabbitmq/rabbitmq.module';
 import {ErrorsModule} from "@lib/errors";
+import {ThrottlerModule} from "@nestjs/throttler";
 
 @Module({
   imports: [
@@ -21,7 +22,11 @@ import {ErrorsModule} from "@lib/errors";
       WebsocketModule,
       GraphqlModule,
       RabbitControllersModule,
-      ErrorsModule
+      ErrorsModule,
+      ThrottlerModule.forRoot([{
+          ttl: 60000,
+          limit: 25,
+      }]),
   ],
   controllers: [],
   providers: [],
