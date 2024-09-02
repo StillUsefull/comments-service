@@ -1,0 +1,179 @@
+.comments-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.comment-list {
+    margin-top: 20px;
+}
+
+.comment-item {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #e9ecef;
+    position: relative;
+}
+
+.comment-item .comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-item .comment-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-item .comment-header .comment-author {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+.comment-item .comment-header .comment-time {
+    margin-left: auto;
+    font-size: 12px;
+    color: #888;
+}
+
+.comment-item .comment-header .comment-actions {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: #888;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.comment-item .comment-header .comment-actions span {
+    cursor: pointer;
+}
+
+.comment-item .comment-header .comment-actions span:hover {
+    color: #007bff;
+}
+
+.comment-item .comment-body {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    margin-top: 5px;
+}
+.comment-item .comment-body img {
+    max-width: 100%;
+}
+
+.comment-item .comment-body .reply {
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.comment-item .comment-body .reply .comment-author {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.comment-updated {
+    margin-left: 5px;
+}
+
+.comment-item .comment-body .reply p {
+    margin: 5px 0;
+}
+
+.comment-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.comment-form button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    max-width: 150px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.comment-form button:hover {
+    background-color: #0056b3;
+}
+
+.comment-item .comment-body .edit-form {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.comment-item .comment-body .edit-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.comment-item .comment-body .edit-form button {
+    background-color: #28a745; /* Green for update */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.comment-item .comment-body .edit-form button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.edit-form-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.close-button {
+    background-color: #dc3545; /* Red for close */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+}

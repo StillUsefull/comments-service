@@ -9,7 +9,6 @@ import {WebsocketModule} from "./ws/websocket.module";
 import { RabbitControllersModule } from './rabbitmq/rabbitmq.module';
 import {ErrorsModule} from "@lib/errors";
 import {ThrottlerModule} from "@nestjs/throttler";
-import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
@@ -28,9 +27,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
           ttl: 60000,
           limit: 100,
       }]),
-      ServeStaticModule.forRoot({
-          rootPath: join(process.cwd(), 'build'),
-      }),
   ],
   controllers: [],
   providers: [],

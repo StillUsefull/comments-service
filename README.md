@@ -11,9 +11,9 @@ This guide will help you set up and run the project locally.
    ```bash
    git pull https://github.com/StillUsefull/comments-service.git
 
-2. **Configure AWS S3 Credentials**
+2. **Configure AWS S3 Credentials and MongoDB database**
 
-    Ensure that your AWS S3 credentials are configured. You may need to update the docker-compose file with your AWS credentials.
+    Ensure that your AWS S3 credentials are configured. You may need to update the docker-compose file with your AWS credentials and MongoDB url.
 
 
 3. **Navigate to the Docker Directory and Start Container**
@@ -21,3 +21,5 @@ This guide will help you set up and run the project locally.
     ```bash
     cd docker
     docker-compose up
+   
+4. **Open localhost:3001**
