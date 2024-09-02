@@ -88,7 +88,7 @@ export class CommentResolver {
     async getComments(
         @Args('postId') postId: string,
         @Args() query: PaginationDto
-    ): Promise<Comment[]> {
+    ) {
         const pagination = plainToInstance(PaginationDto, query);
         return this.commentFacade.getComments(postId, pagination);
     }

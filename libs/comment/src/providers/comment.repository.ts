@@ -6,6 +6,6 @@ export abstract class CommentRepository {
     abstract create(comment: IComment): Promise<CommentAggregate>;
     abstract update(comment: Partial<IComment>): Promise<CommentAggregate>;
     abstract delete(id: string): Promise<string[]>;
-    abstract findAll(postId: string, pagination: PaginationDto): Promise<CommentAggregate[]>;
+    abstract findAll(postId: string, pagination: PaginationDto): Promise<{ comments: CommentAggregate[], hasMore: boolean }>;
     abstract findOne(id: string): Promise<CommentAggregate>;
 }

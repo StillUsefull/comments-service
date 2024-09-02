@@ -96,8 +96,9 @@ export class CommentController {
     @Get('/:postId')
     async getAll(@Param('postId') postId: string,  @Query() query?: PaginationDto){
         const pagination = plainToInstance(PaginationDto, query);
-        const comments = await this.commentFacade.getComments(postId, pagination);
-        return plainToClass(CommentResponseDto, comments, { excludeExtraneousValues: true });
+        const {comments, hasMore} = await this.commentFacade.getComments(postId, pagination);
+        const _comments = plainToClass(CommentResponseDto, comments, { excludeExtraneousValues: true });
+        return {comments: _comments, hasMore}
     }
 
     @Public()

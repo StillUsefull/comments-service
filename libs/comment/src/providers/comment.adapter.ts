@@ -66,23 +66,31 @@ export class CommentAdapter implements CommentRepository {
         return photos;
     }
 
-    async findAll(postId: string, pagination: PaginationDto): Promise<CommentAggregate[]> {
+    async findAll(postId: string, pagination: PaginationDto): Promise<{ comments: CommentAggregate[], hasMore: boolean }> {
 
         const { offset, limit } = pagination;
 
         const rootComments = await this.repository.find({
             where: { postId, parent: IsNull() },
             skip: offset,
-            take: limit,
+            take: limit + 1,
             order: { updatedAt: 'DESC' },
         });
+
+        const hasMore = rootComments.length > limit;
+
+        if (hasMore) {
+            rootComments.pop();
+        }
 
         const trees = await Promise.all(
             rootComments.map(rootComment => this.repository.findDescendantsTree(rootComment))
         );
 
-        return trees.map(tree => CommentAggregate.create(tree));
-
+        return {
+            comments: trees.map(tree => CommentAggregate.create(tree)),
+            hasMore,
+        };
     }
 
 

@@ -11,11 +11,11 @@ export class PaginationDto{
     @Type(() => Number)
     offset = 0;
 
-    @Field(() => Int, { description: 'Number of items to fetch', defaultValue: 15 })
+    @Field(() => Int, { description: 'Number of items to fetch', defaultValue: 25 })
     @IsOptional()
     @IsNumber({ allowNaN: false, allowInfinity: false })
     @Type(() => Number)
     @IsPositive()
-    limit = 15;
+    limit = 25;
 
 }
